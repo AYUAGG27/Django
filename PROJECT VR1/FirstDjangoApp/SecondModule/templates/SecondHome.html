@@ -1,0 +1,88 @@
+{% extends 'base.html' %} {% block title %}
+<title> Home Page </title>
+{% endblock title %} {% block content %}
+</br>
+</br>
+<div class='container'>
+    </br>
+
+
+    {% if messages %} {% for mes in messages %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>{{mes}}</strong>click on close option to Close the alert box
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor%} {% endif%}
+
+    </br>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label> UserName</label>
+            <input type="text" class="form-control" placeholder="UserName" name="username">
+
+        </div>
+        <div class="mb-3">
+            <label> Password </label>
+            <input type="password" class="form-control" name="password" id="exampleInputPassword1" placeholder="Password">
+        </div>
+        <!-- <div class="mb-3 form-check">
+          <input type="checkbox" class="form-check-input" id="exampleCheck1">
+          <label class="form-check-label" for="exampleCheck1">Check me out</label>
+        </div> -->
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <table class="table">
+        <thead>
+            <tr>
+                <!--<th class="col">S/R No</th>-->
+                <th class="col-3">User Name</th>
+                <th class="col-3">Password</th>
+                <th class="col-2">Status</th>
+                <th class="col-2">Is Admin</th>
+                <th class="col-1">Edit</th>
+                <th class="col-1">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for obj in allUser %} {% if obj.isAdmin %}
+
+            <tr class="table-success">
+                <!--<th scope="row">{{forloop.counter}}</th>-->
+                <td class="col-3">{{obj.username}}</td>
+                <td class="col-3">{{obj.password}}</td>
+                <td class="col-2">ADMIN</td>
+                <td class="col-2"><a href="{% url 'checkadmin' obj.id%}"><button type="button" class="btn btn-secondary">Mark as Admin</button></td>
+                <td class="col-1"><a href="{% url 'edituser' obj.id%}"><button type="button" class="btn btn-info">Edit</button></a></td>
+                <td class="col-1"><a href="{% url 'deleteuser' obj.id%}"><button type="button" class="btn btn-danger">Delete</button></a></td>
+            </tr>
+
+            {%else%}
+             <tr class="table-danger">
+                 <!--<th scope="row">{{forloop.counter}}</th>-->
+                <td class="col-3">{{obj.username}}</td>
+                <td class="col-3">{{obj.password}}</td>
+                <td class="col-2">STUDENT</td>
+                <td class="col-2"><a href="{% url 'checkstudent' obj.id%}"><button type="button" class="btn btn-secondary">Mark as Student</button></td>
+                <td class="col-1"><a href="{% url 'edituser' obj.id%}"><button type="button" class="btn btn-info">Edit</button></a></td>
+                <td class="col-1"><a href="{% url 'deleteuser' obj.id%}"><button type="button" class="btn btn-danger">Delete</button></a></td>
+            </tr>
+
+            {% endif %} {%endfor%}
+        </tbody>
+    </table>
+
+    </br>
+    </br>
+
+
+
+
+
+    {% for obj in allUser %} {{obj.username}} | {{obj.password}} | {{obj.isAdmin}}
+    </br>
+    {% endfor %}
+    </br>
+    <h1> {{allUser}} </h1>
+</div>
+{% endblock content %}
